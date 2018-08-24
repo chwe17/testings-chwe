@@ -31,7 +31,25 @@ checkDependencies () {
     fi    
 }
 
+checkLocalconfig () {
+    if [[ $(cat .git/config | grep hub) ]]; then 
+        echo "https is set"
+    else 
+        echo "[user]" >> .git/config
+        echo "  protocol = https" >> .git/config
+    fi
+    if [[ $(cat .git/config | grep user) ]]; then 
+        echo "local repo settings set"
+    else 
+        echo "Please set local repo settings:"
+        echo "[user]" >> .git/config
+        read -p 'NAME: ' usname && echo 'name = '$usname >> .git/config
+        read -p 'EMAIL: ' email && echo 'email = '$email >> .git/config
+    fi
+}
+
 createReport () {
+    checkLocalconfig
     BOARD=$(cat /etc/armbian-release | grep BOARD= | cut -c 7-)
     BRANCH=$(cat /etc/armbian-release | grep BRANCH= | cut -c 8-)
     git checkout -b $(date +%Y%m%d)-$BOARD-$BRANCH
