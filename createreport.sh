@@ -64,7 +64,7 @@ createReport () {
     echo "ARMBIANMONITOR="$(sudo armbianmonitor -u | head -n -2 | cut -c 54-) >> ${BOARD}-${BRANCH}.report
     git add -A && git commit
     hub fork
-    git push -u $(git remote -v | tail -n 1 | awk '{print $1}') $(date +%Y%m%d)-$BOARD-$BRANCH
+    git push -u $(git remote -v | awk '{print $1}' | grep -vE origin | tail -n -1) $(date +%Y%m%d)-$BOARD-$BRANCH
     hub pull-request
 }
 
