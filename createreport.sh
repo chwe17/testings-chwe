@@ -35,7 +35,7 @@ checkLocalconfig () {
     if [[ $(cat .git/config | grep hub) ]]; then 
         echo "https is set"
     else 
-        echo "[user]" >> .git/config
+        echo "[hub]" >> .git/config
         echo "  protocol = https" >> .git/config
     fi
     if [[ $(cat .git/config | grep user) ]]; then 
